@@ -75,6 +75,7 @@ class TestFriends < MiniTest::Test
 
   def test_fav_food?
     assert_equal(true, fav_food?(@person4,"spaghetti"))    
+    assert_equal(false, fav_food?(@person4,"fish")) 
   end
 
   def test_new_friend
@@ -83,14 +84,34 @@ class TestFriends < MiniTest::Test
   end
 
   def test_remove_friend
-    remove_friend(@person3)
-    assert_equal(1, @person3[:friends].count)
+    remove_friend("Rick", @person3 )
+    assert_equal(1, @person3[:friends].size)
   end
 
   def test_total_money
     assert_equal(143, total_money(@people))
   end
 
+  def test_loan
+    loan(@person5, @person1, 50)
+    assert_equal(true, @person1[:monies] == 51 && @person5[:monies] == 50)
+  end
+
+  def test_get_favourite_foods
+    expected = ["charcuterie", "soup", "bread", "ratatouille", "stew", "spaghetti", "spinach"]
+    actual = get_favourite_foods(@people)
+    assert_equal(expected, actual)
+  end
+
+  def test_no_friends
+    assert_equal(['Marc'], no_friends(@people))
+  end
+
+  def test_group_by_tv_show
+    expected = { "Scrubs" => [ "Jay", "Marc" ], "Pokemon" => [ "Val", "Keith" ]}
+    actual = group_by_tv_show(@people)
+    assert_equal(expected, actual)
+  end
 
 end
 
